@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Calculator-v1</title>
+<title>Calculator</title>
 </head>
 <body>
 <h1 style="text_align=center">Calculator</h1>

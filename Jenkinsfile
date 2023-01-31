@@ -5,7 +5,7 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('projectaks-1')
+        DOCKERHUB_CREDENTIALS = credentials('docker')
     }
     stages {
         stage('Build docker image') {

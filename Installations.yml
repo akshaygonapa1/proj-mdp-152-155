@@ -4,12 +4,19 @@
   become: yes
 
   tasks:
-  ---
-###########################
-# Intstall Kops
-###########################
+---
+- hosts: localhost
+  connection: local
+  roles:
+    - awscli
 
 - hosts: localhost
   connection: local
   roles:
     - kops-install
+
+    
+- hosts: localhost
+  connection: local
+  roles:
+    - kubectl-install

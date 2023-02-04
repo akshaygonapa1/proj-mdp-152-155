@@ -1,6 +1,6 @@
 ---
 - name: Install Kubernetes components
-  hosts: localhost
+  hosts: 172.31.51.42
   become: yes
 
   tasks:

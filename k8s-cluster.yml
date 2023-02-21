@@ -29,15 +29,15 @@
     vars:
         ansible_python_interpreter: /usr/bin/python3
     s3_bucket:
-      name: k8-project-10001
+      name: k8s-project-akshay
       state: present
     environment:
-      KOPS_STATE_STORE: s3://k8s-gonapa
+      KOPS_STATE_STORE: s3://k8s-project-akshay
 
 - name: update web servers
   hosts: localhost
 
   tasks:
   - name: Create Cluster
-    shell: kops create cluster --yes --state=s3://k8s-gonapa --zones=us-east-1a,us-east-1b --node-count=2 --name=test.k8s.local
+    shell: kops create cluster --yes --state=s3://k8s-project-akshay --zones=us-east-1a,us-east-1b --node-count=2 --name=test.k8s.local
 ...

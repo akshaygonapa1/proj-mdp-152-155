@@ -1,37 +1,47 @@
 pipeline {
+    environment { 
+        registry = "akshaygonapa/latest" 
+        registryCredential = 'docker' 
+        dockerImage = '' 
+    }
     agent any
-    environment {
-        DOCKERHUB_CREDENTIALS = credentials('docker')
-    }
-    stages {
-        stage('Build docker image') {
-            steps {
-                sh 'docker build -t akshaygonapa/cal .'
-            }   
-        }
-        stage('login') {
-            steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-            }
-        }
-        stage('Push') {
-            steps {
-                sh 'docker push  akshaygonapa/cal'
-            }
-        }
-        stage('Remove existing container'){
-            steps {
-                sh 'docker container rm -f app'
 
-            }
-        }
-        stage('Run container') {
+    stages {
+        
+        stage('Build Image') {
             steps {
-                sh 'docker container run -dt --name app -p 80:8080  akshaygonapa/cal'
-                sh 'docker container ls'
+                echo 'Building Docker Image'
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
             }
         }
-    
+        
+        stage('Deploy Image') {
+            steps {
+                echo 'Pushing Docker Image'
+                script {
+                   docker.withRegistry( '', registryCredential ) {
+                   dockerImage.push("$BUILD_NUMBER")
+                   dockerImage.push('latest')
+                  }
+                }
+            }
+        }
+        
+        stage('Clean Up') {
+            steps {
+                sh "docker rmi $registry:$BUILD_NUMBER"
+                sh "docker rmi $registry:latest"
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+                sh "kubectl apply -f deployment.yaml"
+                sh "kubectl apply -f service.yaml"
+                sh "kubectl rollout restart deployment.apps/calc-deployment"
+            }
+        }
     }
-    
 }

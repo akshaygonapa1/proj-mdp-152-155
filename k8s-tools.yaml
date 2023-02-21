@@ -1,13 +1,3 @@
----
-- name: Install Kubernetes components
-  hosts: localhost
-  become: yes
-
-  tasks:
-  - name: Install pip2
-    package:
-      name: python3-pip
-
   # Already Prepared the Playbook Go through the Playbook
 # This Playbook will be pushed into github so you can check from there too
 # This playbook will install kubectl - kops - generate keys for workstation

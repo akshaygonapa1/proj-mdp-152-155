@@ -38,8 +38,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
-                sh "kubectl apply -f deployment.yaml"
-                sh "kubectl apply -f service.yaml"
+                sh "kubectl apply -f deployment.yml"
+                sh "kubectl apply -f service.yml"
                 sh "kubectl rollout restart deployment.apps/calc-deployment"
             }
         }
